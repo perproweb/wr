@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Z enim klikom poslušaj vse večje slovenske in internetne radijske postaje v živo." />
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+  <link href="style.css" rel="stylesheet" />
+  <link href="radio.css" rel="stylesheet" />
+  <link href="montserrat.css" rel="stylesheet" />
+  <script type="text/javascript" src="radio.js"></script>
+  <script type="text/javascript" src="stations.js"></script>  
+  <title>Spletni radio</title>
+</head>
+<body>
+
+<div id="list"><div>
+  <div id="stationList"></div>
+</div></div>
+
+<div id="controls">
+
+  <button class="button js-button">
+    <svg width="100%" height="100%" viewBox="0 0 36 36" >
+      <defs>
+        <path id="pause-icon" data-state="playing" d="M11,10 L17,10 17,26 11,26 M20,10 L26,10 26,26 20,26" />
+        <path id="play-icon"  data-state="paused" d="M11,10 L18,13.74 18,22.28 11,26 M18,13.74 L26,18 26,18 18,22.28" />
+      </defs>
+      <use xlink:href="#play-icon" />
+    </svg>
+  </button>
+  <p id="name"></p>
+
+</div>
+
+<script type="text/javascript">
+var stationList = document.getElementById("stationList");
+for (var station in stations) { 
+  stationData = stations[station];
+
+  var div = document.createElement("div");
+  stationList.appendChild(div);
+  div.className = "station";
+
+  var a = document.createElement("a");
+  div.appendChild(a);
+  a.setAttribute("href", "#" + station);
+  a.setAttribute("stream", stationData.stream);
+  if (stationData.hasOwnProperty("vol"))
+    a.setAttribute("vol",  stationData.vol);
+
+  var img = document.createElement("img");
+  a.appendChild(img);
+  img.setAttribute("src", "stations/" + (stationData.hasOwnProperty("image") ? stationData.image : station + ".jpg"));
+  img.setAttribute("alt", stationData.name);
+
+  var span = document.createElement("span");
+  a.appendChild(span);
+  var stationName = document.createTextNode(stationData.name);
+  span.appendChild(stationName); 
+}
+var div = document.createElement("div");
+div.className = "endstation";
+stationList.appendChild(div);
+</script>
+
+<script type="text/javascript">
+var btn = document.getElementsByClassName("js-button")[0];
+
+var playerIcon = function(u) {
+  var p = btn.getElementsByTagName("use")[0];
+  p.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", u ? "#pause-icon" : "#play-icon");
+};
+
+var ti = document.title;
+
+N = (function() {
+  var n = document.getElementById("name"), o = null, p = 0;
+  var f = {
+    a: function(x) { n.innerHTML = x; },
+    b: function() {
+      p++; var s = ""; for (i = 0; i < p; i++) s += "."; f.a(s);
+      o = p < 30 ? setTimeout(f.b, 500) : (null, f.c());
+    },
+    c: function() {
+      if (o == null) return;
+      clearTimeout(o); o = null;
+    }
+  };
+  var g = {
+    init: function() {},
+    set: function(x) { f.c(); f.a(x); },
+    clear: function() { f.c(); f.a(""); },
+    loading: function() { f.c(); p = 0; f.b(); }
+  };
+  return g;
+})();
+
+AP.init(1);
+AP.bind({
+  onplay: function() { N.set(cur.name); document.title = cur.name; playerIcon(1); },
+  onpause: function() { N.clear(); document.title = ti; playerIcon(0); },
+  onerror: function() { N.clear(); document.title = ti; playerIcon(0); }
+});
+
+var cur = {name: null};
+
+btn.onclick = function() {
+  AP.toggle();
+  N.loading();
+}
+
+window.onkeypress = function(e) {
+  if (e.charCode == 32) {
+    btn.onclick();
+    return false;
+  }
+};
+
+function getElementAttribute(e, a) {
+  for (var j = 0; j < e.attributes.length; j++)
+    if (e.attributes[j].name == a) 
+      return e.attributes[j].value;
+  return null;
+}
+
+function tuneIn(e) {
+  var stream = getElementAttribute(e, "stream");
+  if (stream == null)
+    return;
+  AP.setUrl(stream);
+  var vol = getElementAttribute(e, "vol");
+  AP.setVol(vol === null ? 1 : vol);
+  var i = e.getElementsByTagName("img");
+  cur.name = i.length > 0 ? i[0].alt : "";
+  N.loading();
+}
+
+var stationIterator = function(f) {
+  var s = document.getElementsByClassName("station");
+  for (var i = 0; i < s.length; i++) {
+    var a = s[i].getElementsByTagName("a");
+    if (a.length != 1)
+      continue;
+    f(a[0]);
+  }
+};
+
+var updateLink = function(e) {
+  (function(e) {
+    e.onclick = function(f) { f.preventDefault(); history.pushState(e.href, '', e.href); tuneIn(e); };
+  })(e);
+};
+
+var parseLocation = function() {
+  var hash_i = window.location.href.indexOf("#");
+  if (hash_i < 0) {
+    if (!AP.paused())
+      AP.pause();
+    return;
+  }    
+  id = window.location.href.substr(hash_i + 1);
+  stationIterator(function(e) {
+    var c = e.href.lastIndexOf("#");
+    if (c < 0)
+      return;
+    var d = e.href.substr(c + 1);
+    if (id == d)
+      tuneIn(e);
+  });
+};
+
+stationIterator(updateLink);
+//parseLocation();
+window.onpopstate = parseLocation;
+
+</script>
+
+</body>
+</html>
