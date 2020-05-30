@@ -98,8 +98,7 @@ N = (function() {
 AP.init(1);
 AP.bind({
   onplay: function() { N.set(cur.name); document.title = cur.name; playerIcon(1); },
-  onpause: function() { N.clear(); document.title = ti; playerIcon(0); },
-  onerror: function() { N.clear(); document.title = ti; playerIcon(0); }
+  onpause: function() { N.clear(); document.title = ti; playerIcon(0); }
 });
 
 var cur = {name: null};

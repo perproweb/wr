@@ -18,6 +18,7 @@ var AP = (function(){
     },
     onloadedmetadata: function() {
       f.info("AP: Metadata loaded.");
+      k = 5;
       if (p) {
         a.pause();
         a.onpause();
