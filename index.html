@@ -42,7 +42,10 @@ for (var station in stations) {
   var a = document.createElement("a");
   div.appendChild(a);
   a.setAttribute("href", "#" + station);
-  a.setAttribute("stream", stationData.stream);
+  if (stationData.hasOwnProperty("stream"))
+    a.setAttribute("stream", stationData.stream);
+  else
+    div.className += " disabled";
   if (stationData.hasOwnProperty("vol"))
     a.setAttribute("vol",  stationData.vol);
 
@@ -137,6 +140,9 @@ var stationIterator = function(f) {
   for (var i = 0; i < s.length; i++) {
     var a = s[i].getElementsByTagName("a");
     if (a.length != 1)
+      continue;
+    var stream = getElementAttribute(a[0], "stream");
+    if (stream == null)
       continue;
     f(a[0]);
   }

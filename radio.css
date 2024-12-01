@@ -3,6 +3,9 @@
   padding: 9px;
   margin: 20px;
 }
+.disabled img {
+  filter: grayscale(100%);
+}
 .station a {
   text-decoration: none;
 }
