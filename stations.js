@@ -13,11 +13,11 @@ var stations = {
   radiocapris: {name: "Radio Capris", stream: "https://stream.exit.si/live", vol: 0.7 },
   radiocelje: {name: "Radio Celje", stream: "https://live.radio.si/Celje" },
   radiocenter: {name: "Radio Center", stream: "http://stream2.radiocenter.si:8000/center", vol: 0.6 },
-  radiocity: {name: "Radio City", stream: "http://82.149.22.34:8000/CityMp3128.mp3" },
+  radiocity: {name: "Radio City", stream: "https://stream1.radiocity.si/CityMp3128.mp3" },
   // preimenuj v BOB
   radioeuropa: {name: "Radio Europa", stream: "http://live.radiobob.si/Europa05" },
-  radioekspres: {name: "Radio Ekspres", stream: "http://stream2.radioekspres.si:8016/stream" },
-  radiogorenc: {name: "Radio Gorenc", stream: "http://stream.radiogorenc.si:8000/radiogorenc.mp3", vol: 0.6 },
+  radioekspres: {name: "Radio Ekspres", stream: "https://stream.nextmedia.si/proxy/ekspres2?mp=/stream" },
+  radiogorenc: {name: "Radio Gorenc", stream: "https://stream.radiogorenc.si:8001/radiogorenc.mp3", vol: 0.6 },
   radiohit: {name: "Radio Hit", stream: "http://stream03.exit.si:8000/radiohit" },
   radiokoper: {name: "Radio Koper", stream: "https://mp3.rtvslo.si/rakp" },
   radiokranj: {name: "Radio Kranj", stream: "http://live.radio-kranj.si/Kranj" },
@@ -42,7 +42,7 @@ var stations = {
   radiostudent: {name: "Radio Študent", stream: "http://kruljo.radiostudent.si:8000/hiq" },
   radiotop: {name: "Radio Top", /*stream: "http://193.105.67.24:8024/"*/ },
   radiotriglav: {name: "Radio Triglav", stream: "http://live.radiotriglav.si/Triglav" },
-  radioveseljak: {name: "Radio Veseljak", stream: "http://84.52.138.44/Veseljak" },
+  radioveseljak: {name: "Radio Veseljak", stream: "https://live.radio.si/Veseljak" },
   radiovelenje: {name: "Radio Velenje", stream: "https://live.radio.si/Velenje", vol: 0.8 },
   radiozelenival: {name: "Radio Zeleni val", stream: "https://jurepeterka.radioca.st/;" },
   rockradio: {name: "Rock radio", stream: "http://stream.rockradio.si:9034/;" }
